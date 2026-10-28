@@ -1,0 +1,18 @@
+target/
+logs/
+*.log
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.DS_Store
+
+# Local smoke / process leftovers
+*-smoke.out
+*-smoke.err
+*.pid
+
+# Local planning drafts (not for git)
+docs/todo/
+

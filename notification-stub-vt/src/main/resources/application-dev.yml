@@ -1,0 +1,16 @@
+logging:
+  level:
+    com.kholodilin.outbox: DEBUG
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    metrics:
+      export:
+        enabled: false
+spring:
+  kafka:
+    consumer:
+      group-id: notification-stub-vt-dev

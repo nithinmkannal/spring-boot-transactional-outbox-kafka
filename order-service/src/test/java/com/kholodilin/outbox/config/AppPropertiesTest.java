@@ -1,0 +1,29 @@
+package com.kholodilin.outbox.config;
+
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class AppPropertiesTest {
+
+    @Test
+    void builderProvidesDefaults() {
+        AppProperties properties = AppProperties.builder().instanceId("pod-a").build();
+
+        assertThat(properties.getInstanceId()).isEqualTo("pod-a");
+        assertThat(properties.getKafka()).isNotNull();
+        assertThat(properties.getRateLimit()).isNotNull();
+        assertThat(properties.getBulkhead()).isNotNull();
+        assertThat(properties.getBulkhead().getMaxConcurrentCreates()).isEqualTo(55);
+        assertThat(properties.getLogging()).isNotNull();
+    }
+
+    @Test
+    void nestedPropertiesAreConfigurable() {
+        AppProperties properties = AppProperties.builder()
+                .kafka(KafkaProperties.builder().topic("custom-topic").build())
+                .build();
+
+        assertThat(properties.getKafka().getTopic()).isEqualTo("custom-topic");
+    }
+}

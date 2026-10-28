@@ -1,0 +1,58 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:16-alpine:///outbox
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  liquibase:
+    enabled: true
+
+management:
+  opentelemetry:
+    enabled: false
+  tracing:
+    enabled: false
+
+idempotency:
+  enabled: true
+  persistence:
+    enabled: true
+    table-name: idempotency_records
+    schema:
+      mode: validate
+
+outbox:
+  enabled: true
+  instance-id: test-instance
+  defaults:
+    persistence:
+      schema:
+        mode: none
+    queue:
+      type: memory
+      capacity: 100
+      batch-size: 50
+      batch-wait: 20ms
+      usage-threshold: 0.8
+    publisher:
+      enabled: true
+      lease-duration: 30s
+      max-retries: 5
+    recovery:
+      enabled: true
+      interval: 1s
+      batch-size: 500
+
+app:
+  rate-limit:
+    global:
+      capacity: 1000
+      refill-per-second: 1000
+    per-customer:
+      capacity: 1000
+      refill-per-second: 1000
+    per-ip:
+      capacity: 1000
+      refill-per-second: 1000
+
+logging:
+  level:
+    com.kholodilin.outbox: INFO
